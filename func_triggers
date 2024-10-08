@@ -1,0 +1,33 @@
+CREATE OR REPLACE FUNCTION create_order(p_user_id INTEGER, p_status VARCHAR, p_total_amount DECIMAL)
+RETURNS INTEGER AS $$
+DECLARE
+    new_order_id INTEGER;
+BEGIN
+    INSERT INTO Orders (user_id, status, total_amount)
+    VALUES (p_user_id, p_status, p_total_amount)
+    RETURNING order_id INTO new_order_id;
+    
+    RETURN new_order_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+//TRIGGERS
+
+-- Function to Update Inventory After Inserting Order Item
+CREATE OR REPLACE FUNCTION update_inventory_after_order()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Inventory
+    SET stock_quantity = stock_quantity - NEW.quantity
+    WHERE product_id = NEW.product_id;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger on Order_Items Insert
+CREATE TRIGGER trg_update_inventory
+AFTER INSERT ON Order_Items
+FOR EACH ROW
+EXECUTE FUNCTION update_inventory_after_order();
