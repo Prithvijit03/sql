@@ -1,0 +1,29 @@
+//fetch 10 products based on sales
+SELECT 
+    p.name, 
+    SUM(oi.quantity) AS total_sold
+FROM Order_Items oi
+JOIN Products p ON oi.product_id = p.product_id
+GROUP BY p.name
+ORDER BY total_sold DESC
+LIMIT 10;
+
+//calculate customer lifetime
+SELECT 
+    u.username, 
+    SUM(o.total_amount) AS lifetime_value
+FROM Users u
+JOIN Orders o ON u.user_id = o.user_id
+GROUP BY u.username
+ORDER BY lifetime_value DESC;
+
+
+//find employess due for performance
+-- Placeholder query as the HR system is not defined in this schema
+-- Example:
+SELECT 
+    e.first_name, 
+    e.last_name, 
+    e.last_review_date
+FROM Employees e
+WHERE e.last_review_date < CURRENT_DATE - INTERVAL '6 months';
