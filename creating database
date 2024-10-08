@@ -1,0 +1,5 @@
+-- Create E-commerce Database
+CREATE DATABASE ecommerce_db;
+
+-- Connect to the E-commerce Database
+\c ecommerce_db;
