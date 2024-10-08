@@ -1,0 +1,11 @@
+-- Index on Products Name for faster search
+CREATE INDEX idx_products_name ON Products(name);
+
+-- Index on Orders User ID to quickly find orders by a user
+CREATE INDEX idx_orders_user_id ON Orders(user_id);
+
+-- Index on Order_Items Order ID to optimize joins
+CREATE INDEX idx_order_items_order_id ON Order_Items(order_id);
+
+-- Index on Payments Order ID for quick payment lookups
+CREATE INDEX idx_payments_order_id ON Payments(order_id);
